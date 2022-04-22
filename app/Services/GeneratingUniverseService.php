@@ -50,11 +50,9 @@ class GeneratingUniverseService
     {
         $getKeyCellOfMidUniverse = round(count($universe->getCells()) / 2);
 
-        $neighborsKeys = array_flip(
-            $this->universeRepository->getNeighborsKeys($getKeyCellOfMidUniverse, $universe)
-        );
+        $neighbors = $universe->getCells()->getNeighborsByKey($getKeyCellOfMidUniverse);
 
-        $keysForLiveCells = array_rand($neighborsKeys, config('game.qntLiveCellsFromStart'));
+        $keysForLiveCells = array_rand($neighbors, config('game.qntLiveCellsFromStart'));
 
         foreach ($keysForLiveCells as $key) {
             /* @var Cell $cell */
@@ -72,16 +70,15 @@ class GeneratingUniverseService
     private function updateCellsStatus(Universe $universe): Universe
     {
         $newUniverse = clone $universe;
-        foreach ($universe->getCells() as $key => $cell) {
+        $universeCollection = $universe->getCells();
+
+        foreach ($universeCollection as $key => $cell) {
             /* @var Cell $cell */
 
             if (empty($cell->getNeighbors())) {
-                $cell->setNeighbors(
-                    array_intersect_key(
-                        $universe->toArray(),
-                        array_flip($this->universeRepository->getNeighborsKeys($key, $universe))
-                    ));
+                $cell->setNeighbors($universeCollection->getNeighborsByKey($key));
             }
+
             $newCell = $this->cellRepository->updateCell($cell);
             $newUniverse = $this->universeRepository->setCellByKey($newCell, $newUniverse);
         }

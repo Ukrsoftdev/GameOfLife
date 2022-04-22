@@ -10,7 +10,6 @@ use App\Rules\GameRulesForCells\Underpopulation;
 
 class CellRepository implements CellRepositoryInterface
 {
-
     /**
      * @param array|null $data
      * @return Cell

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Collections\CellsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,30 +11,22 @@ class Universe extends Model
     use HasFactory;
 
     /**
-     * @var array
+     * @var CellsCollection
      */
-    private array $cells;
+    private CellsCollection $cells;
 
     /**
-     * @return int
+     * @return CellsCollection
      */
-    public static function getQntCellsInRow(): int
-    {
-        return config('game.qntCellsInRowOfSquare');
-    }
-
-    /**
-     * @return array
-     */
-    public function getCells(): array
+    public function getCells(): CellsCollection
     {
         return $this->cells;
     }
 
     /**
-     * @param array $cells
+     * @param CellsCollection $cells
      */
-    public function setCells(array $cells): void
+    public function setCells(CellsCollection $cells): void
     {
         $this->cells = $cells;
     }
@@ -52,6 +45,7 @@ class Universe extends Model
             /* @var Cell $cell */
             $response[$key] = $cell->getStatus();
         }
+
         return $response;
     }
 }

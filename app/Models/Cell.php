@@ -9,7 +9,11 @@ class Cell extends Model
 {
     use HasFactory;
 
-    private int $key;
+    /**
+     * @var int|null
+     */
+    private int|null $key = null;
+
     /**
      * @var int
      */
@@ -22,15 +26,16 @@ class Cell extends Model
 
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getKey(): int
+    public function getKey(): int|null
     {
         return $this->key;
     }
 
     /**
      * @param int $key
+     * @return void
      */
     public function setKey(int $key): void
     {
@@ -71,5 +76,16 @@ class Cell extends Model
     public function getNeighbors(): array
     {
         return $this->neighbors;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        if ($this->key === null) {
+            return parent::toArray();
+        }
+        return [$this->key => $this->status];
     }
 }

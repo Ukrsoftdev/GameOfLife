@@ -42,7 +42,7 @@ class GenerateUniverse extends Command
      */
     public function handle(array $data = null): int
     {
-        if($data === null) {
+        if ($data === null) {
             $data = $this->generatingUniverseService->createNewUniverse();
         }
 
@@ -107,13 +107,13 @@ class GenerateUniverse extends Command
 
         foreach ($data as $rowKey => $item) {
             foreach ($item as $cellKey => $cell) {
-                    if ($cell === 0) {
-                        $data[$rowKey][$cellKey] = '<bg=gray> </>';
-                    }
+                if ($cell === 0) {
+                    $data[$rowKey][$cellKey] = '<bg=gray> </>';
+                }
 
-                    if ($cell === 1) {
-                        $data[$rowKey][$cellKey] = '<bg=red> </>';
-                    }
+                if ($cell === 1) {
+                    $data[$rowKey][$cellKey] = '<bg=red> </>';
+                }
             }
             $data[$rowKey] = array_pad($data[$rowKey], -1 - config('game.qntCellsInRowOfSquare'), '<fg=green>' . ($rowKey + 1) . '</>');
         }
